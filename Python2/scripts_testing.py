@@ -5,29 +5,28 @@ import get_Default_Gateway as dfg
 import check_devicePlatform as dpt
 
 requests = []
-# fname = "../requests.txt"
-# with open(fname) as f:
-# 	content = f.readlines()
-# requests = [x.strip() for x in content]
-#ip = dfg.get_DefaultGateway()
+fname = "../requests.txt"
+with open(fname) as f:
+	content = f.readlines()
+requests = [x.strip() for x in content]
 
 # Request 0
-requests.append("GET http://www.emaze.net/test.html HTTP/1.0\nHost:\n")
-
-# Request 1
-requests.append("GET http://www.emaze.net/test.html HTTP/1.0\n\n")
-
-# Request 2
-requests.append("GET http://www.emaze.net/ HTTP/1.0\nHost:\n")
-
-# Request 3
-requests.append("GET http://www.emaze.net/ HTTP/1.0\n\n")
-
-# Request 4
-requests.append("GET / HTTP/1.0\nHost:\n")
-
-# Request 5
-requests.append("GET / HTTP/1.0\n\n")
+# requests.append("GET http://www.emaze.net/test.html HTTP/1.0\nHost:\n")
+#
+# # Request 1
+# requests.append("GET http://www.emaze.net/test.html HTTP/1.0\n\n")
+#
+# # Request 2
+# requests.append("GET http://www.emaze.net/ HTTP/1.0\nHost:\n")
+#
+# # Request 3
+# requests.append("GET http://www.emaze.net/ HTTP/1.0\n\n")
+#
+# # Request 4
+# requests.append("GET / HTTP/1.0\nHost:\n")
+#
+# # Request 5
+# requests.append("GET / HTTP/1.0\n\n")
 
 def main():
 	ip = check_device_platform()
@@ -56,7 +55,7 @@ def main():
 					exit()
 				else: # fazer para apenas um pedido		
 					selectedRequests.append(requests[reqOpt])
-					ports = ChoosePorts(selectedRequests)
+					ports = ChoosePorts()
 					PerformAllRequests(ports, selectedRequests, ip)
 
 			else: # sacar mais que um pedido 
@@ -66,11 +65,11 @@ def main():
 					for i in xrange(len(selectedRequests)):
 						if a == selectedRequests[i]:
 							selectedFinalReq.append(requests[a])
-				ports = ChoosePorts(selectedFinalReq)
+				ports = ChoosePorts()
 				PerformAllRequests(ports, selectedFinalReq, ip)
 
 		else: # fazer pra todos os pedidos
-			ports = ChoosePorts(requests)
+			ports = ChoosePorts()
 			PerformAllRequests(ports, requests, ip)
 
 
@@ -95,7 +94,7 @@ def printAvailableRequests():
 		print("{} - {}".format(requests.index(i), repr(i)))
 
 #PORTS
-def ChoosePorts(requests):
+def ChoosePorts():
 	ports = []
 	port = input("Port: ") 
 	if isinstance(port, int): #one number is recognize as INT type
@@ -103,7 +102,7 @@ def ChoosePorts(requests):
 		print(ports)
 	else:
 		ports.append(port)
-		ports  = [x for xs in ports for x in xs] # iterate over the string
+		ports = [x for xs in ports for x in xs] # iterate over the string
 	return ports
 
 #request = requests[requestID].encode('utf-8')
