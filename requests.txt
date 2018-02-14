@@ -1,0 +1,6 @@
+GET http://www.emaze.net/test.html HTTP/1.0\nHost:\n
+GET http://www.emaze.net/test.html HTTP/1.0\n\n
+GET http://www.emaze.net/ HTTP/1.0\nHost:\n
+GET http://www.emaze.net/ HTTP/1.0\n\n
+GET / HTTP/1.0\nHost:\n
+GET / HTTP/1.0\n\n
