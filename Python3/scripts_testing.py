@@ -25,7 +25,6 @@ requests.append("GET / HTTP/1.0\nHost:\n")
 # Request 5
 requests.append("GET / HTTP/1.0\n\n")
 
-
 def main():
     ip = check_device_platform()
     print("Default Gateway: ", ip)
@@ -36,11 +35,12 @@ def main():
     print("1 - Perform all requests")
     print("2 - Perform some requests")
 
-    ports = []
     selectedRequests = []
     selectedFinalReq = []
     option = input("Option --> ")
-    if isinstance(option, int):
+
+    try:
+        option = int(option)
         if option < 1 or option > 2:
             print("Please, select option 1 or 2!")
             exit()
@@ -54,7 +54,7 @@ def main():
                     exit()
                 else:  # fazer para apenas um pedido
                     selectedRequests.append(requests[reqOpt])
-                    ports = ChoosePorts(selectedRequests)
+                    ports = ChoosePorts()
                     PerformAllRequests(ports, selectedRequests, ip)
 
             else:  # sacar mais que um pedido
@@ -64,21 +64,24 @@ def main():
                     for i in range(len(selectedRequests)):
                         if a == selectedRequests[i]:
                             selectedFinalReq.append(requests[a])
-                ports = ChoosePorts(selectedFinalReq)
+                ports = ChoosePorts()
                 PerformAllRequests(ports, selectedFinalReq, ip)
 
         else:  # fazer pra todos os pedidos
-            ports = ChoosePorts(requests)
+            ports = ChoosePorts()
             PerformAllRequests(ports, requests, ip)
+    except ValueError:
+        print("ERROR: Only integer options are acceptable!")
+        exit()
 
 
 def check_device_platform():
     plat_dev, plat_release = dpt.get_devicePlatform()
     ip_def = ""
-    if (plat_dev == "Windows"):
+    if plat_dev == "Windows":
         print("Running script on Windows ", plat_release)
         ip_def = dfg.get_DefaultGateway_Windows()
-    elif (plat_dev == "Linux"):
+    elif plat_dev == "Linux":
         print("Running script on Linux ", plat_release)
         ip_def = dfg.default_gateway_linux()
     return ip_def
@@ -91,20 +94,22 @@ def printAvailableRequests():
 
 
 # PORTS
-def ChoosePorts(requests):
+def ChoosePorts():
     ports = []
     port = input("Port: ")
-    if isinstance(port, int):  # one number is recognize as INT type
+    try:
+        port = int(port)    # one number is recognize as INT type
         ports.append(port)
-        print(ports)
-    else:
-        ports.append(port)
-        ports = [x for xs in ports for x in xs]  # iterate over the string
+    except ValueError:
+        port = str(port)
+        ports = [int(x) for x in port.split(',')] # list comprehension
+        print(len(ports))
     return ports
 
 
 # request = requests[requestID].encode('utf-8')
 def PerformAllRequests(ports, requests, ip):
+    print(requests)
     for request in range(len(requests)):
         # print(requests[request])
 
