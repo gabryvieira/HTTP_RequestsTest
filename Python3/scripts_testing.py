@@ -6,24 +6,28 @@ import check_devicePlatform as dpt
 
 requests = []
 # ip = dfg.get_DefaultGateway()
-
-# Request 0
-requests.append("GET http://www.emaze.net/test.html HTTP/1.0\nHost:\n")
-
-# Request 1
-requests.append("GET http://www.emaze.net/test.html HTTP/1.0\n\n")
-
-# Request 2
-requests.append("GET http://www.emaze.net/ HTTP/1.0\nHost:\n")
-
-# Request 3
-requests.append("GET http://www.emaze.net/ HTTP/1.0\n\n")
-
-# Request 4
-requests.append("GET / HTTP/1.0\nHost:\n")
-
-# Request 5
-requests.append("GET / HTTP/1.0\n\n")
+requests = []
+fname = "../requests.txt"
+with open(fname) as f:
+	content = f.readlines()
+requests = [x.strip() for x in content]
+# # Request 0
+# requests.append("GET http://www.emaze.net/test.html HTTP/1.0\nHost:\n")
+#
+# # Request 1
+# requests.append("GET http://www.emaze.net/test.html HTTP/1.0\n\n")
+#
+# # Request 2
+# requests.append("GET http://www.emaze.net/ HTTP/1.0\nHost:\n")
+#
+# # Request 3
+# requests.append("GET http://www.emaze.net/ HTTP/1.0\n\n")
+#
+# # Request 4
+# requests.append("GET / HTTP/1.0\nHost:\n")
+#
+# # Request 5
+# requests.append("GET / HTTP/1.0\n\n")
 
 def main():
     ip = check_device_platform()
@@ -48,7 +52,10 @@ def main():
             printAvailableRequests()
             print("Choose one or more requests to perform:")
             reqOpt = input("Requests --> ")
-            if isinstance(reqOpt, int):  # fazer para um pedido
+
+            try:
+                reqOpt = int(reqOpt)
+            #if isinstance(reqOpt, int):  # fazer para um pedido
                 if reqOpt < 0 or reqOpt > (len(requests) - 1):
                     print("Wrong request number!")
                     exit()
@@ -57,9 +64,12 @@ def main():
                     ports = ChoosePorts()
                     PerformAllRequests(ports, selectedRequests, ip)
 
-            else:  # sacar mais que um pedido
-                selectedRequests.append(reqOpt)
-                selectedRequests = [x for xs in selectedRequests for x in xs]  # converte string para array
+            # sacar mais que um pedido
+            except ValueError:
+                reqOpt = str(reqOpt)
+                #ports = [int(x) for x in port.split(',')]  # list comprehension
+                #selectedRequests.append(reqOpt)
+                selectedRequests = [int(x) for x in reqOpt.split(',')]  # list comprehension  # converte string para array
                 for a in range(len(requests)):
                     for i in range(len(selectedRequests)):
                         if a == selectedRequests[i]:
@@ -70,6 +80,7 @@ def main():
         else:  # fazer pra todos os pedidos
             ports = ChoosePorts()
             PerformAllRequests(ports, requests, ip)
+
     except ValueError:
         print("ERROR: Only integer options are acceptable!")
         exit()
@@ -110,9 +121,8 @@ def ChoosePorts():
 # request = requests[requestID].encode('utf-8')
 def PerformAllRequests(ports, requests, ip):
     print(requests)
+    print(len(requests))
     for request in range(len(requests)):
-        # print(requests[request])
-
         request = requests[request].encode('utf-8')
         for a in range(len(ports)):
             print("\n")
