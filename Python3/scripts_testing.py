@@ -5,7 +5,6 @@ import get_Default_Gateway as dfg
 import check_devicePlatform as dpt
 
 requests = []
-# ip = dfg.get_DefaultGateway()
 requests = []
 fname = "../requests.txt"
 with open(fname) as f:
@@ -53,9 +52,8 @@ def main():
             print("Choose one or more requests to perform:")
             reqOpt = input("Requests --> ")
 
-            try:
+            try: # for a single request
                 reqOpt = int(reqOpt)
-            #if isinstance(reqOpt, int):  # fazer para um pedido
                 if reqOpt < 0 or reqOpt > (len(requests) - 1):
                     print("Wrong request number!")
                     exit()
@@ -64,12 +62,11 @@ def main():
                     ports = ChoosePorts()
                     PerformAllRequests(ports, selectedRequests, ip)
 
-            # sacar mais que um pedido
+            # more than one request
             except ValueError:
                 reqOpt = str(reqOpt)
-                #ports = [int(x) for x in port.split(',')]  # list comprehension
                 #selectedRequests.append(reqOpt)
-                selectedRequests = [int(x) for x in reqOpt.split(',')]  # list comprehension  # converte string para array
+                selectedRequests = [int(x) for x in reqOpt.split(',')]  # list comprehension
                 for a in range(len(requests)):
                     for i in range(len(selectedRequests)):
                         if a == selectedRequests[i]:
@@ -77,7 +74,7 @@ def main():
                 ports = ChoosePorts()
                 PerformAllRequests(ports, selectedFinalReq, ip)
 
-        else:  # fazer pra todos os pedidos
+        else:  # to all requests
             ports = ChoosePorts()
             PerformAllRequests(ports, requests, ip)
 
@@ -120,8 +117,6 @@ def ChoosePorts():
 
 # request = requests[requestID].encode('utf-8')
 def PerformAllRequests(ports, requests, ip):
-    print(requests)
-    print(len(requests))
     for request in range(len(requests)):
         request = requests[request].encode('utf-8')
         for a in range(len(ports)):
