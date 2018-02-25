@@ -5,33 +5,39 @@ import get_Default_Gateway as dfg
 import check_devicePlatform as dpt
 
 requests = []
-requests = []
 fname = "../requests.txt"
 with open(fname) as f:
 	content = f.readlines()
 requests = [x.strip() for x in content]
+
+
 # # Request 0
 # requests.append("GET http://www.emaze.net/test.html HTTP/1.0\nHost:\n")
-#
-# # Request 1
-# requests.append("GET http://www.emaze.net/test.html HTTP/1.0\n\n")
-#
-# # Request 2
-# requests.append("GET http://www.emaze.net/ HTTP/1.0\nHost:\n")
-#
-# # Request 3
-# requests.append("GET http://www.emaze.net/ HTTP/1.0\n\n")
-#
-# # Request 4
-# requests.append("GET / HTTP/1.0\nHost:\n")
-#
-# # Request 5
-# requests.append("GET / HTTP/1.0\n\n")
 
 def main():
     ip = check_device_platform()
-    print("Default Gateway: ", ip)
-    #print("IPv4 Address: ", address)
+    print('')
+    print("IP address to perform the requests:")
+    print("1 - Use default gateway", ip)
+    print("2 - Another IP address")
+    ipOption = input("Option --> ")
+    try:
+        ipOption = int(ipOption)
+        if ipOption < 1 or ipOption > 2:
+            print("Please, select option 1 or 2!")
+            exit()
+
+        elif ipOption == 1:
+            print("Default Gateway: ", ip)
+
+        else:
+            destIP = input("IP Address: ")
+            ip = destIP
+    except ValueError:
+        print("ERROR: Only integer options are acceptable!")
+        exit()
+
+    print(ip)
     print("\n")
     printAvailableRequests()
     print("\n")

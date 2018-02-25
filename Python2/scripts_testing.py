@@ -12,26 +12,30 @@ requests = [x.strip() for x in content]
 
 # Request 0
 # requests.append("GET http://www.emaze.net/test.html HTTP/1.0\nHost:\n")
-#
-# # Request 1
-# requests.append("GET http://www.emaze.net/test.html HTTP/1.0\n\n")
-#
-# # Request 2
-# requests.append("GET http://www.emaze.net/ HTTP/1.0\nHost:\n")
-#
-# # Request 3
-# requests.append("GET http://www.emaze.net/ HTTP/1.0\n\n")
-#
-# # Request 4
-# requests.append("GET / HTTP/1.0\nHost:\n")
-#
-# # Request 5
-# requests.append("GET / HTTP/1.0\n\n")
 
 def main():
 	ip = check_device_platform()
-	print "Default Gateway: ",ip
-	#print "IPv4 Address: ",address
+	print('')
+	print("IP address to perform the requests:")
+	print "1 - Use default gateway", ip
+	print("2 - Another IP address")
+	ipOption = input("Option --> ") #input for int on python2
+	if isinstance(ipOption, int):
+		if ipOption < 1 or ipOption > 2:
+			print("Please, select option 1 or 2!")
+			exit()
+
+		elif ipOption == 1:
+			print("Default Gateway: ", ip)
+
+		else:
+			destIP = raw_input("IP Address: ") # raw_input for string on python2
+			ip = destIP
+	else:
+		print("ERROR: Only integer options are acceptable!")
+		exit()
+
+	print ip
 	print("\n")
 	printAvailableRequests()
 	print("\n")
@@ -78,10 +82,10 @@ def check_device_platform():
 	plat_dev, plat_release = dpt.get_devicePlatform()
 	ip_def =""
 	ipv4_addr =""
-	if(plat_dev == "Windows"):
+	if plat_dev == "Windows":
 		print "Running script on Windows ",plat_release
 		ip_def = dfg.get_DefaultGateway_Windows()
-	elif(plat_dev == "Linux"):
+	elif plat_dev == "Linux":
 		print "Running script on Linux ", plat_release
 		ip_def = dfg.default_gateway_linux()
 	return ip_def
@@ -103,6 +107,7 @@ def ChoosePorts():
 	else:
 		ports.append(port)
 		ports = [x for xs in ports for x in xs] # iterate over the string
+		print(ports)
 	return ports
 
 #request = requests[requestID].encode('utf-8')

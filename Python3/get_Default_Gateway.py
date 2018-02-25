@@ -35,16 +35,15 @@ def default_gateway_linux():
     defRoutes = ip.get_default_routes()
     try:
         defRoutes = np.asarray(defRoutes).item(0) # converter em array unico e depois em string
-        print(defRoutes)
         defRoutes = defRoutes['attrs'] # obter os values da key "attrs" onde se encontra o default gateway
     except IndexError:
         print("ERROR: NO INTERNET CONNECTION!")
-        exit() #finalizar script aqui!
+        exit()
 
     # transforma num dicionario para facil iteracao
     defRoutes = dict(defRoutes)
     default_gateway = defRoutes["RTA_GATEWAY"]
-    print(default_gateway)
+    #print(default_gateway)
     return default_gateway
 
 
