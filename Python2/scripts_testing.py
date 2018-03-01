@@ -92,7 +92,7 @@ def check_device_platform():
 		ip_def = dfg.default_gateway_linux()
 	elif plat_dev.lower() == "darwin": #mac os x
 		print "Running script on Mac OS X ", plat_release
-		ip_def = dfg.default_gateway_macOSX()
+		ip_def = dfg.default_gateway_macOSX()  
 	return ip_def
 
 
