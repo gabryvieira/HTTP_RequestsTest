@@ -80,14 +80,19 @@ def main():
 				
 def check_device_platform():
 	plat_dev, plat_release = dpt.get_devicePlatform()
+	print plat_dev
+	print plat_release
 	ip_def =""
 	ipv4_addr =""
-	if plat_dev == "Windows":
+	if plat_dev.lower() == "windows":  #lower for case sensitive string
 		print "Running script on Windows ",plat_release
 		ip_def = dfg.get_DefaultGateway_Windows()
-	elif plat_dev == "Linux":
+	elif plat_dev.lower() == "linux":
 		print "Running script on Linux ", plat_release
 		ip_def = dfg.default_gateway_linux()
+	elif plat_dev.lower() == "darwin": #mac os x
+		print "Running script on Mac OS X ", plat_release
+		ip_def = dfg.default_gateway_macOSX()
 	return ip_def
 
 

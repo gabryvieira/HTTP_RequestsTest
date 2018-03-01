@@ -42,3 +42,11 @@ def default_gateway_linux():
     defRoutes = dict(defRoutes)
     default_gateway = defRoutes["RTA_GATEWAY"]
     return default_gateway
+
+###############################################################################
+
+def default_gateway_macOSX():
+    import netifaces
+    gateways = netifaces.gateways()
+    default_gateway = gateways['default'][netifaces.AF_INET][0]
+    return default_gateway 
