@@ -44,6 +44,13 @@ def default_gateway_linux():
     return default_gateway
 
 
+def default_gateway_macOSX():
+    import netifaces
+    gateways = netifaces.gateways()
+    default_gateway = gateways['default'][netifaces.AF_INET][0]
+    return default_gateway
+
+
 
 
 
