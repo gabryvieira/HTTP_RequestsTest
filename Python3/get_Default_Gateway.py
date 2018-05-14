@@ -1,4 +1,5 @@
 import numpy as np
+from requests import get
 
 #####   WINDOWS  ###########################################################
 # def get_Stopped_services_Windows():
@@ -51,7 +52,9 @@ def default_gateway_macOSX():
     return default_gateway
 
 
-
+def getExternalIPAddress():
+    ip_addr = get('https://ipapi.co/ip/')
+    return ip_addr.text
 
 
 

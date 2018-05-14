@@ -1,5 +1,5 @@
 import numpy as np
-
+from requests import get
 #####   WINDOWS  ###########################################################
 # def get_Stopped_services_Windows():
 #     import wmi
@@ -30,7 +30,7 @@ def get_DefaultGateway_Windows():
 def default_gateway_linux():
     from pyroute2 import IPRoute
     ip = IPRoute()
-    defRoutes = ip.get_default_routes()  
+    defRoutes = ip.get_default_routes()
     try:
         defRoutes = np.asarray(defRoutes).item(0) # converter em array unico e depois em string
         defRoutes = defRoutes['attrs'] # obter os values da key "attrs" onde se encontra o default gateway
@@ -49,4 +49,9 @@ def default_gateway_macOSX():
     import netifaces
     gateways = netifaces.gateways()
     default_gateway = gateways['default'][netifaces.AF_INET][0]
-    return default_gateway 
+    return default_gateway
+
+
+def getExternalIPAddress():
+    ip_addr = get('https://ipapi.co/ip/')
+    return ip_addr.text

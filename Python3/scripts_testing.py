@@ -15,12 +15,9 @@ requests = [x.strip() for x in content]
 # requests.append("GET http://www.emaze.net/test.html HTTP/1.0\nHost:\n")
 
 def main():
-    ip = check_device_platform()
-    print('')
-    print("IP address to perform the requests:")
-    print("1 - Use default gateway", ip)
-    print("2 - Another IP address")
-    ipOption = input("Option --> ")
+    ip, extIP = check_device_platform()
+    ipOption = printMenu(ip, extIP)
+
     try:
         ipOption = int(ipOption)
         if ipOption < 1 or ipOption > 2:
@@ -28,7 +25,11 @@ def main():
             exit()
 
         elif ipOption == 1:
-            print("Default Gateway: ", ip)
+            print("Using default gateway: ", ip)
+
+        elif ipOption == 2:
+            print("Using external IP address: ", extIP)
+            ip = extIP
 
         else:
             destIP = input("IP Address: ")
@@ -89,6 +90,16 @@ def main():
         exit()
 
 
+def printMenu(ip, extIP):
+    print('')
+    print("IP address to perform the requests:")
+    print("1 - Use default gateway", ip)
+    print("2 - Use external IP address", extIP)
+    print("3 - Another IP address")
+    ipOption = input("Option --> ")
+    return ipOption
+
+
 def check_device_platform():
     plat_dev, plat_release = dpt.get_devicePlatform()
     ip_def = ""
@@ -101,7 +112,8 @@ def check_device_platform():
     elif plat_dev.lower() == "darwin":  # mac os x
         print("Running script on Mac OS X ", plat_release)
         ip_def = dfg.default_gateway_macOSX()
-    return ip_def
+    ext_ip = dfg.getExternalIPAddress()
+    return ip_def, ext_ip
 
 
 def printAvailableRequests():
